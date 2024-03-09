@@ -23,9 +23,18 @@ jobs:
                 with:
                     fetch-depth: 0
 
+            -   name: "Install requirements"
+                run: "python3 -m pip install -r requirements.txt"
+
+            -   name: "Install coverage library"
+                run: "python3 -m pip install coverage"
+
             -   name: "Run tests"
                 timeout-minutes: 1
-                run: "python3 -m unittest discover --pattern \"tests_*.py\""
+                run: "coverage run -m unittest discover --pattern \"tests_*.py\" --start-directory tests/"
+
+            -   name: "Get coverage report"
+                run: "coverage report -m --omit=\"tests/tests_*.py\""
 
     merge-branch:
         needs:
