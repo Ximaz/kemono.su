@@ -1,0 +1,44 @@
+name: "ci"
+
+env:
+    MAIN_BRANCH: "main"
+
+on:
+    push:
+        branches-ignore:
+            -   "main"
+
+    pull_request:
+        branches-ignore:
+            -   "main"
+
+jobs:
+    run-tests:
+        runs-on: "ubuntu-latest"
+        container:
+            image: "faucet/python3:latest"
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v4.1.1"
+                with:
+                    fetch-depth: 0
+
+            -   name: "Run tests"
+                timeout-minutes: 1
+                run: "python3 -m unittest discover --pattern \"tests_*.py\""
+
+    merge-branch:
+        needs:
+            -   "run-tests"
+        if: "${{ github.event_name == 'push' }}"
+        runs-on: "ubuntu-latest"
+        steps:
+            -   name: "Checkout"
+                uses: "actions/checkout@v4.1.1"
+                with:
+                    fetch-depth: 0
+
+            -   name: "Push all commits"
+                env:
+                    GITHUB_TOKEN: "${{ secrets.PERSONNAL_ACCESS_TOKEN }}"
+                run: "git push origin ${{ github.ref_name }}:${{ env.MAIN_BRANCH }}"
