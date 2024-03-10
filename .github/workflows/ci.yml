@@ -31,10 +31,7 @@ jobs:
 
             -   name: "Run tests"
                 timeout-minutes: 1
-                run: "coverage run -m unittest discover --pattern \"tests_*.py\" --start-directory tests/"
-
-            -   name: "Get coverage report"
-                run: "coverage report -m --omit=\"tests/tests_*.py\""
+                run: "bash tests_run.bash"
 
     merge-branch:
         needs:
