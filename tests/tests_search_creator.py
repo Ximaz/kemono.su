@@ -11,15 +11,15 @@ CREATORS_FILE = "creators.txt"
 class TestSearchCreator(unittest.TestCase):
     def test_valid_account(self):
         name = "Miyukitty"
-        creator_id = kemono.get_creator_id(name=name)
-        self.assertTrue(isinstance(creator_id, (int, type(None),)), "Return value should either be int or None")
-        self.assertEqual(creator_id, 70394974, f"It seems that the account of {name} has been deleted. Please, take another account as a reference")
+        creator = kemono.get_creator(name=name)
+        self.assertTrue(isinstance(creator, (dict, type(None),)), "Return value should either be int or None")
+        self.assertEqual(creator["id"], "70394974", f"It seems that the account of {name} has been deleted. Please, take another account as a reference")
 
     def test_unknowned_account(self):
         name = "this account definitely doesn't exist"
-        creator_id = kemono.get_creator_id(name=name)
-        self.assertTrue(isinstance(creator_id, (int, type(None),)), "Return value should either be int or None")
-        self.assertEqual(creator_id, None, f"Somehow the unknowned account reference actually exists now, please change to another odd thing")
+        creator = kemono.get_creator(name=name)
+        self.assertTrue(isinstance(creator, (dict, type(None),)), "Return value should either be int or None")
+        self.assertEqual(creator, None, f"Somehow the unknowned account reference actually exists now, please change to another odd thing")
 
     def test_check_creators_file(self):
         if os.path.exists(CREATORS_FILE):
