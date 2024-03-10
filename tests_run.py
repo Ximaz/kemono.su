@@ -25,7 +25,7 @@ def capture_coverage() -> coverage.Coverage:
     return cov
 
 def parse_coverage():
-    regex = re.compile(r"^([^\s]+)\s+\d+\s+\d+\s+(\d+%)$")
+    regex = re.compile(r"^([^\s]+)\s+\d+\s+\d+\s+(\d+)%$")
     cov = capture_coverage()
     with open(COVERAGE_FILE, "w+") as report:
         cov.report(omit=OMIT, file=report)
@@ -38,7 +38,13 @@ def parse_coverage():
 def github_action_annotation():
     handle = open("parsed-coverage.txt", "w+")
     for file, cover in parse_coverage():
-        handle.write(f"{file} {cover}\n")
+        cover = float(cover)
+        if 80 <= cover:
+            handle.write(f"::debug::{file} is covered at {cover}%\n")
+        if 80 > cover:
+            handle.write(f"::warning::{file} is covered at {cover}%, could be better\n")
+        if 20 > cover:
+            handle.write(f"::error::{file} is covered at only {cover}%\n")
     handle.close()
 
 github_action_annotation()

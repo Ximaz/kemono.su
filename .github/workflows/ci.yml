@@ -37,9 +37,7 @@ jobs:
                 run: |
                     echo "::group::Coverage"
                     while IFS= read -r line; do
-                        file=$(echo "${line}" | cut -d ' ' -f 1)
-                        coverage=$(echo "${line}" | cut -d ' ' -f 2)
-                        echo "::debug::${file} covered at ${coverage}"
+                        echo "${line}"
                     done < parsed-coverage.txt
                     echo "::endgroup::"
                     rm -f parsed-coverage.txt
