@@ -31,7 +31,7 @@ jobs:
 
             -   name: "Run tests"
                 timeout-minutes: 1
-                run: "bash tests_run.bash"
+                run: "sh tests_run.sh"
 
     merge-branch:
         needs:
