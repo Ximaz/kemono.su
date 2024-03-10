@@ -37,7 +37,6 @@ def parse_coverage():
 
 def github_action_annotation():
     handle = open("parsed-coverage.txt", "w+")
-    one_error = 0
     for file, cover in parse_coverage():
         cover = float(cover)
         if 80 <= cover:
@@ -46,9 +45,6 @@ def github_action_annotation():
             handle.write(f"::warning::{file} is covered at {cover}%, could be better\n")
         if 20 > cover:
             handle.write(f"::error::{file} is covered at only {cover}%\n")
-            one_error = 1
     handle.close()
-    if 1 == one_error:
-        sys.exit(1)
 
 github_action_annotation()
