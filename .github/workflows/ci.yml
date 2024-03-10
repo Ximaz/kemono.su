@@ -33,6 +33,16 @@ jobs:
                 timeout-minutes: 1
                 run: "python3 tests_run.py"
 
+            -   name: "Do GitHub Action Annotation"
+                run: |
+                    while IFS= read -r line; do
+                        file=$(echo "${line}" | cut -d ' ' -f 1)
+                        coverage=$(echo "${line}" | cut -d ' ' -f 2)
+                        echo "::debug file=${file}::${file} covered at ${coverage}"
+                        status=1
+                    done < parsed-coverage.txt
+                    rm -f parsed-coverage.txt
+
     merge-branch:
         needs:
             -   "run-tests"

@@ -36,10 +36,9 @@ def parse_coverage():
     os.unlink(COVERAGE_FILE)
 
 def github_action_annotation():
-    print("::group::Coverage")
+    handle = open("parsed-coverage.txt", "w+")
     for file, cover in parse_coverage():
-        print(f"::debug::{file} {cover}")
-    print("::endgroup::")
-    sys.exit(0)
+        handle.write(f"{file} {cover}\n")
+    handle.close()
 
 github_action_annotation()
