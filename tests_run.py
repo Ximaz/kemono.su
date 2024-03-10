@@ -16,7 +16,7 @@ def capture_coverage() -> coverage.Coverage:
 
     loader = unittest.TestLoader()
     tests = loader.discover(start_dir="tests/", pattern="tests_*.py")
-    test_runner = unittest.runner.TextTestRunner(stream=open(os.devnull, "w"))
+    test_runner = unittest.runner.TextTestRunner()
     results = test_runner.run(tests)
     if 0 < len(results.failures) or 0 < len(results.errors):
         sys.exit(1)
@@ -32,6 +32,7 @@ def parse_coverage():
     with open(COVERAGE_FILE, "r") as report:
         report_content = report.read().split("\n")[2:-3]
     for line in report_content:
+        print(line)
         yield regex.findall(line)[0]
     os.unlink(COVERAGE_FILE)
 
