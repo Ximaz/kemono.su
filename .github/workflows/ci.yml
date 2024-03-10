@@ -35,12 +35,13 @@ jobs:
 
             -   name: "Do GitHub Action Annotation"
                 run: |
+                    echo "::group::Coverage"
                     while IFS= read -r line; do
                         file=$(echo "${line}" | cut -d ' ' -f 1)
                         coverage=$(echo "${line}" | cut -d ' ' -f 2)
-                        echo "::debug file=${file}::${file} covered at ${coverage}"
-                        status=1
+                        echo "::debug::${file} covered at ${coverage}"
                     done < parsed-coverage.txt
+                    echo "::endgroup::"
                     rm -f parsed-coverage.txt
 
     merge-branch:
