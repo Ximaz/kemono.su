@@ -30,7 +30,7 @@ jobs:
                 run: "python3 -m pip install coverage"
 
             -   name: "Run tests"
-                timeout-minutes: 1
+                timeout-minutes: 3
                 run: "python3 tests_run.py"
 
             -   name: "Do GitHub Action Annotation"

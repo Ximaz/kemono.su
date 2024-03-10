@@ -67,7 +67,7 @@ HTML_PAGE = """
 
 class TestGetGallery(unittest.TestCase):
     def test_page_parser(self):
-        links = kemono.parse_page(page=HTML_PAGE)
+        links = kemono.parse_gallery_page(page=HTML_PAGE)
         self.assertTrue(2 == len(links))
         for link in links:
             self.assertEqual(link, f"https://kemono.su/{IMAGINARY_CREATOR['service']}/user/{IMAGINARY_CREATOR['id']}/post/post_id")
