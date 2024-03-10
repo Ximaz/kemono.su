@@ -6,14 +6,14 @@ sys.path.append("..")
 
 import kemono
 
+CREATOR = "Miyukitty"
 CREATORS_FILE = "creators.txt"
 
 class TestSearchCreator(unittest.TestCase):
     def test_valid_account(self):
-        name = "Miyukitty"
-        creator = kemono.get_creator(name=name)
+        creator = kemono.get_creator(name=CREATOR)
         self.assertTrue(isinstance(creator, (dict, type(None),)), "Return value should either be int or None")
-        self.assertEqual(creator["id"], "70394974", f"It seems that the account of {name} has been deleted. Please, take another account as a reference")
+        self.assertEqual(creator["id"], "70394974", f"It seems that the account of {CREATOR} has been deleted. Please, take another account as a reference")
 
     def test_unknowned_account(self):
         name = "this account definitely doesn't exist"
@@ -35,4 +35,8 @@ class TestSearchCreator(unittest.TestCase):
             self.assertTupleEqual(tuple(map(lambda v: type(v), e.values())), expected_value_types, error)
 
 if __name__ == "__main__":
+    if os.path.exists(CREATORS_FILE):
+        os.unlink(CREATORS_FILE)
     unittest.main()
+    if os.path.exists(CREATORS_FILE):
+        os.unlink(CREATORS_FILE)
