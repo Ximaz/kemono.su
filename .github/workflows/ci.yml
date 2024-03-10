@@ -31,7 +31,7 @@ jobs:
 
             -   name: "Run tests"
                 timeout-minutes: 1
-                run: "sh tests_run.sh"
+                run: "python3 tests_run.py"
 
     merge-branch:
         needs:
