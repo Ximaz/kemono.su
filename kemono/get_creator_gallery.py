@@ -23,8 +23,10 @@ def get_creator_entire_gallery(creator: dict) -> list[str]:
     page = 1
     total = []
     gallery = get_creator_gallery(creator=creator, page=page)
-    while len(gallery) > 0:
+    while True:
         total.extend(gallery)
+        if 50 > len(gallery):
+            break
         page += 1
         gallery = get_creator_gallery(creator=creator, page=page)
     return total

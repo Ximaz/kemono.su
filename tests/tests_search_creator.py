@@ -1,27 +1,34 @@
 import os
 import sys
 import unittest
+import unittest.mock
 
 sys.path.append("..")
 
 import kemono
+import response_mocker
 
-CREATOR = "Miyukitty"
 CREATORS_FILE = "creators.txt"
 
 class TestSearchCreator(unittest.TestCase):
-    def test_valid_account(self):
-        creator = kemono.get_creator(name=CREATOR)
+    @unittest.mock.patch("requests.get")
+    def test_valid_account(self, mock: unittest.mock.MagicMock):
+        mock.side_effect = lambda url, **kwargs: response_mocker.mock_creators_response(url, **kwargs)
+        creator = kemono.get_creator(name=response_mocker.IMAGINARY_CREATOR["name"])
         self.assertTrue(isinstance(creator, (dict, type(None),)), "Return value should either be int or None")
-        self.assertEqual(creator["id"], "70394974", f"It seems that the account of {CREATOR} has been deleted. Please, take another account as a reference")
+        self.assertEqual(creator["id"], response_mocker.IMAGINARY_CREATOR["id"])
 
-    def test_unknowned_account(self):
+    @unittest.mock.patch("requests.get")
+    def test_unknowned_account(self, mock: unittest.mock.MagicMock):
+        mock.side_effect = lambda url, **kwargs: response_mocker.mock_creators_response(url, **kwargs)
         name = "this account definitely doesn't exist"
         creator = kemono.get_creator(name=name)
         self.assertTrue(isinstance(creator, (dict, type(None),)), "Return value should either be int or None")
-        self.assertEqual(creator, None, f"Somehow the unknowned account reference actually exists now, please change to another odd thing")
+        self.assertEqual(creator, None)
 
-    def test_check_creators_file(self):
+    @unittest.mock.patch("requests.get")
+    def test_check_creators_file(self, mock: unittest.mock.MagicMock):
+        mock.side_effect = lambda url, **kwargs: response_mocker.mock_creators_response(url, **kwargs)
         if os.path.exists(CREATORS_FILE):
             os.unlink(CREATORS_FILE)
         creators = kemono.get_creators()
