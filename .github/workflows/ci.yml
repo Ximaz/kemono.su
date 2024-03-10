@@ -35,12 +35,12 @@ jobs:
 
             -   name: "Do GitHub Action Annotation"
                 run: |
-                    exit_code = 0
+                    exit_code=0
                     echo "::group::Coverage"
                     while IFS= read -r line; do
                         echo "${line}"
                         if [[ "${line}" == "::error::*" && 0 == "${exit_code}" ]]; then
-                            exit_code = 1
+                            exit_code=1
                         fi
                     done < parsed-coverage.txt
                     echo "::endgroup::"
